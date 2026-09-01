@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/bubbleHandle"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/bg_bubble"
+        android:contentDescription="@string/app_name"
+        android:padding="12dp"
+        android:src="@drawable/ic_stat_mic"
+        android:tint="@android:color/white" />
+
+    <LinearLayout
+        android:id="@+id/bubblePanel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_panel"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/presetLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:text="@string/app_name"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnPreset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next_preset" />
+
+        <Button
+            android:id="@+id/btnMute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mute_mic" />
+
+        <Button
+            android:id="@+id/btnStopSounds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stop_sounds" />
+
+        <HorizontalScrollView
+            android:id="@+id/clipScroll"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/clipRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
+        <Button
+            android:id="@+id/btnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stop" />
+    </LinearLayout>
+</LinearLayout>
