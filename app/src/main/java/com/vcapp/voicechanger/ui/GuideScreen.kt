@@ -73,6 +73,29 @@ fun GuideScreen(modifier: Modifier = Modifier) {
             )
         }
 
+        SectionCard("Optimal call setup (be heard clearly)") {
+            Step(
+                1, "Start VcApp, Output = Speaker",
+                "Live tab → Start voice changer. Keep Output on Speaker and \"Hear my own voice\" ON — " +
+                    "the speaker is what the call's microphone picks up."
+            )
+            Step(
+                2, "Turn OFF the call app's loudspeaker",
+                "In WhatsApp/Discord/Messenger start the call but do NOT enable its loudspeaker. " +
+                    "You hear the other person through the earpiece (or headphones), so there is no " +
+                    "feedback loop and they hear your changed voice clearly."
+            )
+            Step(
+                3, "Choose a voice and set Volume + Bass",
+                "Use the Voice sound panel on the Live tab, or the Effects tab, to set Volume (start " +
+                    "around +4..+8 dB) and Bass to taste. Changes apply instantly during the call."
+            )
+            Step(
+                4, "Use the floating bubble",
+                "The overlay bubble lets you switch presets or fire MP3s without leaving the call."
+            )
+        }
+
         SectionCard("Best results") {
             Text(
                 "• Keep the phone flat, speaker facing up.\n" +
