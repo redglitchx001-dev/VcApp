@@ -55,6 +55,91 @@ fun GuideScreen(modifier: Modifier = Modifier) {
             )
         }
 
+        SectionCard("\"I keep hearing myself\" or \"they can't hear me\"") {
+            Text(
+                "Your changed voice comes out of the phone's speaker, so you hear it and \"\n" +
+                    "the call's microphone hears it too. That's how a stock phone works — it's not a bug.\n" +
+                    "Live tab → Quick controls has a switch called \"Hear my own voice\". Turn it OFF if\n" +
+                    "you don't want to listen to yourself.\n\n" +
+                    "Important: with the speaker path, muting your own monitoring also mutes what\n" +
+                    "the other person receives — the same speaker feeds both. To stop hearing yourself\n" +
+                    "WHILE the other person still hears you, use earphones with a microphone: keep\n" +
+                    "\"Hear my own voice\" ON, choose the Earpiece output, and talk near the mic.\n\n" +
+                    "If they can't hear you at all, check: VcApp is Running (Live tab), Output is\n" +
+                    "Speaker, \"Hear my own voice\" is ON, Volume is not all the way down, and your\n" +
+                    "phone's media/call volume is up.",
+                fontSize = 13.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+
+        SectionCard("Optimal call setup (be heard clearly)") {
+            Step(
+                1, "Start VcApp, Output = Speaker",
+                "Live tab → Start voice changer. Keep Output on Speaker and \"Hear my own voice\" ON — " +
+                    "the speaker is what the call's microphone picks up."
+            )
+            Step(
+                2, "Turn OFF the call app's loudspeaker",
+                "In WhatsApp/Discord/Messenger start the call but do NOT enable its loudspeaker. " +
+                    "You hear the other person through the earpiece (or headphones), so there is no " +
+                    "feedback loop and they hear your changed voice clearly."
+            )
+            Step(
+                3, "Choose a voice and set Volume + Bass",
+                "Use the Voice sound panel on the Live tab, or the Effects tab, to set Volume (start " +
+                    "around +4..+8 dB) and Bass to taste. Changes apply instantly during the call."
+            )
+            Step(
+                4, "Use the floating bubble",
+                "The overlay bubble lets you switch presets or fire MP3s without leaving the call."
+            )
+        }
+
+        SectionCard("Root: real-time voice injection (Magisk + LSPosed)") {
+            Text(
+                "A rooted phone can go further and feed your changed voice straight into the " +
+                    "call's microphone instead of through the speaker. It needs three layers: " +
+                    "Magisk (root), LSPosed (hooking), and a virtual-microphone module. " +
+                    "Full step-by-step: the file ROOT_VOICE_INJECTION.md in the project.\n\n" +
+                    "On Android 15/16 the classic LSPosed does not load, so you MUST use:\n" +
+                    "• Zygisk-Next (addon) instead of Magisk's built-in Zygisk\n" +
+                    "• JingMatrix LSPosed 1.10.2 (builds from GitHub Actions)\n\n" +
+                    "Modules known to target Android 15/16:\n" +
+                    "• GlassMic — virtual microphone, AudioRecord + AAudio hooks, floating ball, " +
+                    "designed for Android 15/16\n" +
+                    "• Echidna — real-time voice changer injected into the call app itself\n\n" +
+                    "Both are experimental and device-specific. Only flash them if you can recover " +
+                    "the phone from safe mode / recovery if it bootloops.",
+                fontSize = 13.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(Modifier.height(6.dp))
+            Step(
+                1, "Magisk root + unlock bootloader",
+                "Magisk is already running on your phone. Keep it updated."
+            )
+            Step(
+                2, "Install Zygisk-Next",
+                "In Magisk, turn OFF the built-in Zygisk and install the Zygisk-Next addon instead — " +
+                    "this is the key fix that makes LSPosed load on Android 16."
+            )
+            Step(
+                3, "Install JingMatrix LSPosed 1.10.2",
+                "Download the build from its GitHub Actions. Enable the module in Magisk and reboot."
+            )
+            Step(
+                4, "Install a virtual-mic module",
+                "Install GlassMic (or Echidna). In LSPosed, enable the module and add WhatsApp / " +
+                    "Discord / Messenger to its scope. Reboot."
+            )
+            Step(
+                5, "Use VcApp normally",
+                "Keep VcApp running on Live tab. The module hooks the call app's AudioRecord so it " +
+                    "receives your changed voice instead of the real microphone."
+            )
+        }
+
         SectionCard("Best results") {
             Text(
                 "• Keep the phone flat, speaker facing up.\n" +

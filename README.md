@@ -25,6 +25,7 @@
 | Recorder | Records the processed result to WAV and shares it to WhatsApp, Discord, Messenger, Telegram… |
 | Floating bubble | Overlay controls (next preset, mute mic, fire clips, stop) on top of any call app |
 | Foreground service | Keeps running while you are inside another app, with notification actions |
+| Hear my own voice | Live tab toggle — silence your own monitoring, plus a quick 10-control Voice sound panel (Volume, Bass, Treble, Pitch, Echo, Reverb, Distortion, Robot, Tremolo, Noise gate) |
 | Output routing | Speaker / Earpiece / Bluetooth SCO, plus system AEC + noise suppressor |
 
 ## How it works with WhatsApp / Discord / Messenger
@@ -46,6 +47,15 @@ uses the two paths that work on a stock phone:
 * **Recorder path** — record with effects and send the file as a voice message.
 
 The whole explanation is also inside the app, in the **Guide** tab.
+
+### Root: feed your changed voice straight into the call's microphone
+
+On a **rooted** phone (Magisk + LSPosed) you can inject your processed voice directly
+into the microphone of WhatsApp / Discord / Messenger instead of going through the
+speaker. This is the only path on Android that truly replaces the mic for other apps,
+and it needs **Zygisk-Next + JingMatrix LSPosed** to work on Android 15/16.
+
+➡️ **Full step-by-step tutorial: [`ROOT_VOICE_INJECTION.md`](ROOT_VOICE_INJECTION.md)**
 
 ## Project layout
 

@@ -56,6 +56,10 @@ object EngineController {
     private val _micEnabled = MutableStateFlow(true)
     val micEnabled: StateFlow<Boolean> = _micEnabled.asStateFlow()
 
+    /** When true the processed output is silenced -> you don't hear your own voice. */
+    private val _outputMuted = MutableStateFlow(false)
+    val outputMuted: StateFlow<Boolean> = _outputMuted.asStateFlow()
+
     private val _isRecording = MutableStateFlow(false)
     val isRecording: StateFlow<Boolean> = _isRecording.asStateFlow()
 
@@ -112,6 +116,7 @@ object EngineController {
         e.soundboard.duckVoiceWhilePlaying = repository.duckVoice
         e.route = _route.value
         e.micEnabled = _micEnabled.value
+        e.outputMuted = _outputMuted.value
         engine = e
         val ok = e.start()
         _isRunning.value = ok
@@ -154,6 +159,13 @@ object EngineController {
     fun setMicEnabled(enabled: Boolean) {
         _micEnabled.value = enabled
         engine?.micEnabled = enabled
+    }
+
+    /** Toggles whether you hear your own processed voice. When muted, the output
+     *  is silenced, so neither you nor the other side of the call hears it. */
+    fun setOutputMuted(muted: Boolean) {
+        _outputMuted.value = muted
+        engine?.outputMuted = muted
     }
 
     fun setSoundboardVolume(v: Float) {

@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -118,4 +119,21 @@ fun LabeledRow(label: String, value: String) {
         Text(label, fontSize = 14.sp)
         Text(value, fontSize = 14.sp, fontWeight = FontWeight.Medium)
     }
+}
+
+/** A labelled slider control. */
+@Composable
+fun Knob(
+    label: String,
+    value: Float,
+    range: ClosedFloatingPointRange<Float>,
+    display: String,
+    onChange: (Float) -> Unit
+) {
+    LabeledRow(label, display)
+    Slider(
+        value = value.coerceIn(range.start, range.endInclusive),
+        onValueChange = onChange,
+        valueRange = range
+    )
 }
