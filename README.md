@@ -48,6 +48,15 @@ uses the two paths that work on a stock phone:
 
 The whole explanation is also inside the app, in the **Guide** tab.
 
+### Root: feed your changed voice straight into the call's microphone
+
+On a **rooted** phone (Magisk + LSPosed) you can inject your processed voice directly
+into the microphone of WhatsApp / Discord / Messenger instead of going through the
+speaker. This is the only path on Android that truly replaces the mic for other apps,
+and it needs **Zygisk-Next + JingMatrix LSPosed** to work on Android 15/16.
+
+➡️ **Full step-by-step tutorial: [`ROOT_VOICE_INJECTION.md`](ROOT_VOICE_INJECTION.md)**
+
 ## Project layout
 
 ```

@@ -96,6 +96,50 @@ fun GuideScreen(modifier: Modifier = Modifier) {
             )
         }
 
+        SectionCard("Root: real-time voice injection (Magisk + LSPosed)") {
+            Text(
+                "A rooted phone can go further and feed your changed voice straight into the " +
+                    "call's microphone instead of through the speaker. It needs three layers: " +
+                    "Magisk (root), LSPosed (hooking), and a virtual-microphone module. " +
+                    "Full step-by-step: the file ROOT_VOICE_INJECTION.md in the project.\n\n" +
+                    "On Android 15/16 the classic LSPosed does not load, so you MUST use:\n" +
+                    "• Zygisk-Next (addon) instead of Magisk's built-in Zygisk\n" +
+                    "• JingMatrix LSPosed 1.10.2 (builds from GitHub Actions)\n\n" +
+                    "Modules known to target Android 15/16:\n" +
+                    "• GlassMic — virtual microphone, AudioRecord + AAudio hooks, floating ball, " +
+                    "designed for Android 15/16\n" +
+                    "• Echidna — real-time voice changer injected into the call app itself\n\n" +
+                    "Both are experimental and device-specific. Only flash them if you can recover " +
+                    "the phone from safe mode / recovery if it bootloops.",
+                fontSize = 13.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(Modifier.height(6.dp))
+            Step(
+                1, "Magisk root + unlock bootloader",
+                "Magisk is already running on your phone. Keep it updated."
+            )
+            Step(
+                2, "Install Zygisk-Next",
+                "In Magisk, turn OFF the built-in Zygisk and install the Zygisk-Next addon instead — " +
+                    "this is the key fix that makes LSPosed load on Android 16."
+            )
+            Step(
+                3, "Install JingMatrix LSPosed 1.10.2",
+                "Download the build from its GitHub Actions. Enable the module in Magisk and reboot."
+            )
+            Step(
+                4, "Install a virtual-mic module",
+                "Install GlassMic (or Echidna). In LSPosed, enable the module and add WhatsApp / " +
+                    "Discord / Messenger to its scope. Reboot."
+            )
+            Step(
+                5, "Use VcApp normally",
+                "Keep VcApp running on Live tab. The module hooks the call app's AudioRecord so it " +
+                    "receives your changed voice instead of the real microphone."
+            )
+        }
+
         SectionCard("Best results") {
             Text(
                 "• Keep the phone flat, speaker facing up.\n" +
