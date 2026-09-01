@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">VcApp</string>
+
+    <string name="channel_engine">Voice changer engine</string>
+    <string name="channel_engine_desc">Keeps the voice changer running during calls.</string>
+    <string name="notif_title">VcApp is live</string>
+    <string name="notif_text">Preset: %1$s</string>
+
+    <string name="mute_mic">Mute mic</string>
+    <string name="unmute_mic">Unmute mic</string>
+    <string name="stop">Stop</string>
+    <string name="reset">Reset</string>
+    <string name="next_preset">Next preset</string>
+    <string name="stop_sounds">Stop sounds</string>
+</resources>
