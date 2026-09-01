@@ -25,6 +25,7 @@
 | Recorder | Records the processed result to WAV and shares it to WhatsApp, Discord, Messenger, Telegram… |
 | Floating bubble | Overlay controls (next preset, mute mic, fire clips, stop) on top of any call app |
 | Foreground service | Keeps running while you are inside another app, with notification actions |
+| Hear my own voice | Live tab toggle — silence your own monitoring, plus a quick 10-control Voice sound panel (Volume, Bass, Treble, Pitch, Echo, Reverb, Distortion, Robot, Tremolo, Noise gate) |
 | Output routing | Speaker / Earpiece / Bluetooth SCO, plus system AEC + noise suppressor |
 
 ## How it works with WhatsApp / Discord / Messenger

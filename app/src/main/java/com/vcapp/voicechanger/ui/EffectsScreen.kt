@@ -3,7 +3,6 @@ package com.vcapp.voicechanger.ui
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,22 +12,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vcapp.voicechanger.service.EngineController
 import kotlin.math.roundToInt
-
-@Composable
-private fun Knob(
-    label: String,
-    value: Float,
-    range: ClosedFloatingPointRange<Float>,
-    display: String,
-    onChange: (Float) -> Unit
-) {
-    LabeledRow(label, display)
-    Slider(
-        value = value.coerceIn(range.start, range.endInclusive),
-        onValueChange = onChange,
-        valueRange = range
-    )
-}
 
 @Composable
 fun EffectsScreen(modifier: Modifier = Modifier) {

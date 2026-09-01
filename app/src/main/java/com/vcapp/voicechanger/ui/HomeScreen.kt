@@ -44,6 +44,7 @@ import com.vcapp.voicechanger.audio.OutputRoute
 import com.vcapp.voicechanger.service.BubbleService
 import com.vcapp.voicechanger.service.EngineController
 import kotlinx.coroutines.delay
+import kotlin.math.roundToInt
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, onStartRequested: () -> Unit) {
@@ -52,6 +53,7 @@ fun HomeScreen(modifier: Modifier = Modifier, onStartRequested: () -> Unit) {
     val settings by EngineController.settings.collectAsState()
     val route by EngineController.route.collectAsState()
     val micOn by EngineController.micEnabled.collectAsState()
+    val outputMuted by EngineController.outputMuted.collectAsState()
     val recording by EngineController.isRecording.collectAsState()
 
     var outLevel by remember { mutableFloatStateOf(0f) }
@@ -127,6 +129,49 @@ fun HomeScreen(modifier: Modifier = Modifier, onStartRequested: () -> Unit) {
             }
         }
 
+        SectionCard("Voice sound") {
+            Text(
+                "Set your voice level and tone fast. Fine-tune everything in the Effects tab.",
+                fontSize = 13.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(Modifier.height(8.dp))
+            Knob("Volume", settings.gainDb, -20f..20f, "${settings.gainDb.roundToInt()} dB") { v ->
+                EngineController.updateSettings { gainDb = v; presetName = "Custom" }
+            }
+            Knob("Bass", settings.bassDb, -12f..18f, "${settings.bassDb.roundToInt()} dB") { v ->
+                EngineController.updateSettings { bassDb = v; presetName = "Custom" }
+            }
+            Knob("Treble", settings.trebleDb, -12f..18f, "${settings.trebleDb.roundToInt()} dB") { v ->
+                EngineController.updateSettings { trebleDb = v; presetName = "Custom" }
+            }
+            Knob(
+                "Pitch",
+                settings.pitchSemitones, -12f..12f,
+                "${if (settings.pitchSemitones > 0) "+" else ""}${settings.pitchSemitones.roundToInt()} st"
+            ) { v -> EngineController.updateSettings { pitchSemitones = v; presetName = "Custom" } }
+            Knob("Echo", settings.echoMix, 0f..1f, "${(settings.echoMix * 100).roundToInt()} %") { v ->
+                EngineController.updateSettings { echoMix = v; presetName = "Custom" }
+            }
+            Knob("Reverb", settings.reverbAmount, 0f..1f, "${(settings.reverbAmount * 100).roundToInt()} %") { v ->
+                EngineController.updateSettings { reverbAmount = v; presetName = "Custom" }
+            }
+            Knob("Distortion", settings.distortion, 0f..1f, "${(settings.distortion * 100).roundToInt()} %") { v ->
+                EngineController.updateSettings { distortion = v; presetName = "Custom" }
+            }
+            Knob("Robot", settings.robotDepth, 0f..1f, "${(settings.robotDepth * 100).roundToInt()} %") { v ->
+                EngineController.updateSettings { robotDepth = v; presetName = "Custom" }
+            }
+            Knob("Tremolo", settings.tremoloDepth, 0f..1f, "${(settings.tremoloDepth * 100).roundToInt()} %") { v ->
+                EngineController.updateSettings { tremoloDepth = v; presetName = "Custom" }
+            }
+            Knob(
+                "Noise gate",
+                settings.noiseGateDb, -80f..-20f,
+                if (settings.noiseGateDb <= -79f) "Off" else "${settings.noiseGateDb.roundToInt()} dB"
+            ) { v -> EngineController.updateSettings { noiseGateDb = v } }
+        }
+
         SectionCard("Quick controls") {
             Row(
                 Modifier.fillMaxWidth(),
@@ -148,6 +193,25 @@ fun HomeScreen(modifier: Modifier = Modifier, onStartRequested: () -> Unit) {
                     Spacer(Modifier.size(6.dp))
                     Text("Stop sounds")
                 }
+            }
+            Spacer(Modifier.height(10.dp))
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text("Hear my own voice", fontWeight = FontWeight.Medium)
+                    Text(
+                        if (outputMuted) "Off — your voice is silent to everyone" else "On — you hear yourself",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Switch(
+                    checked = !outputMuted,
+                    onCheckedChange = { checked -> EngineController.setOutputMuted(!checked) }
+                )
             }
             Spacer(Modifier.height(10.dp))
             Row(

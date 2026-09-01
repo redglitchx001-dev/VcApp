@@ -55,6 +55,24 @@ fun GuideScreen(modifier: Modifier = Modifier) {
             )
         }
 
+        SectionCard("\"I keep hearing myself\" or \"they can't hear me\"") {
+            Text(
+                "Your changed voice comes out of the phone's speaker, so you hear it and \"\n" +
+                    "the call's microphone hears it too. That's how a stock phone works — it's not a bug.\n" +
+                    "Live tab → Quick controls has a switch called \"Hear my own voice\". Turn it OFF if\n" +
+                    "you don't want to listen to yourself.\n\n" +
+                    "Important: with the speaker path, muting your own monitoring also mutes what\n" +
+                    "the other person receives — the same speaker feeds both. To stop hearing yourself\n" +
+                    "WHILE the other person still hears you, use earphones with a microphone: keep\n" +
+                    "\"Hear my own voice\" ON, choose the Earpiece output, and talk near the mic.\n\n" +
+                    "If they can't hear you at all, check: VcApp is Running (Live tab), Output is\n" +
+                    "Speaker, \"Hear my own voice\" is ON, Volume is not all the way down, and your\n" +
+                    "phone's media/call volume is up.",
+                fontSize = 13.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+
         SectionCard("Best results") {
             Text(
                 "• Keep the phone flat, speaker facing up.\n" +
