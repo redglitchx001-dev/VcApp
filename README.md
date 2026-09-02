@@ -82,16 +82,17 @@ app/src/main/java/com/vcapp/voicechanger/
 
 ## Build
 
-Requirements: Android Studio Koala or newer, JDK 17, Android SDK 34.
+Requirements: JDK 17, Android SDK 34, Gradle 8.7 (wrapper included in the repo).
 
 ```bash
-# open the folder in Android Studio, then:
 ./gradlew assembleDebug        # APK at app/build/outputs/apk/debug/app-debug.apk
-./gradlew installDebug
+./gradlew installDebug         # install on a connected phone
 ```
 
-The Gradle wrapper JAR is not committed. On first open, Android Studio will offer to
-generate it, or run `gradle wrapper --gradle-version 8.7` once with a local Gradle.
+* **Build on your phone (Termux, no root/Magisk):** see [`BUILD.md`](BUILD.md).
+* **Prebuilt debug APK:** every push / pull request is built by the
+  [`Build APK`](.github/workflows/build-apk.yml) workflow — grab the
+  `VcApp-debug-apk` artifact from the latest green run in the Actions tab.
 
 Minimum Android version: 7.0 (API 24). Target: Android 14 (API 34).
 

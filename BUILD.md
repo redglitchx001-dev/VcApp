@@ -1,40 +1,98 @@
-# Build VcApp local (fără CI)
+# Build VcApp
 
-Nu există workflow de build pe GitHub. APK-ul se face local, pe calculatorul tău.
+Ai 3 căi să obții APK-ul de debug. Cea mai rapidă e să-l descarci gata construit
+din GitHub Actions; pentru testare pe termen lung poți construi local, pe PC sau
+direct pe telefon (Termux).
 
-## De ce ai nevoie
+## 1. Descarcă APK-ul gata construit (cel mai rapid)
 
-- **Android Studio** (Koala sau mai nou) — vine cu JDK 17 inclus
-- **Android SDK Platform 34** + **Build-Tools 34** (Android Studio le descarcă singur la primul sync)
-- ~4 GB liberi pe disc
+Repo-ul are workflow-ul [`.github/workflows/build-apk.yml`](.github/workflows/build-apk.yml)
+care rulează la fiecare push pe `main`, la fiecare pull request și manual.
 
-## Pași (Android Studio)
+1. Deschide: **https://github.com/redglitchx001-dev/VcApp/actions**
+2. Intră pe ultimul run verde **`Build APK`**.
+3. Jos, la **Artifacts**, descarcă **`VcApp-debug-apk`**.
+4. Dezarhivează zip-ul → obții `VcApp-debug-<sha>.apk` (debug, semnat).
+5. Instalează pe telefon: `adb install VcApp-debug-<sha>.apk` sau copiază-l pe
+   telefon și deschide-l (cu „Install unknown apps" activat pentru browser/file manager).
 
-1. `git clone https://github.com/redglitchx001-dev/VcApp.git`
-   apoi `git checkout arena/01a05dc3-vcapp`
-2. **Open** folderul `VcApp` în Android Studio (nu „Import project", doar Open).
-3. Când te întreabă de Gradle wrapper, lasă-l să-l genereze / să folosească Gradle 8.7.
-   (Wrapper JAR-ul nu e commituit în repo.)
-4. Așteaptă **Gradle Sync** să termine (prima dată durează, descarcă dependențele).
-5. Conectează telefonul cu **USB debugging** pornit și apasă **Run ▶**,
-   sau **Build → Build Bundle(s)/APK(s) → Build APK(s)**.
+## 2. Build pe telefon — Termux + proot-distro Ubuntu (fără root/Magisk)
 
-APK-ul apare la:
+Merge pe orice telefon cu **~4 GB RAM liberi** (primul build e lent, ~15–40 min,
+și descarcă ~1.5 GB). Nu ai nevoie de root: `proot-distro` rulează în userspace.
+
+### Pasul 1 — o singură dată, în Termux
+
+```bash
+pkg update && pkg upgrade -y
+pkg install -y proot-distro
+proot-distro install ubuntu        # ~1 GB, o singură dată
+```
+
+### Pasul 2 — intră în Ubuntu și rulează scriptul de build
+
+```bash
+proot-distro login ubuntu
+
+apt-get update && apt-get install -y git
+git clone https://github.com/redglitchx001-dev/VcApp.git
+cd VcApp
+bash scripts/termux-build.sh        # instalează JDK 17 + Android SDK 34 + face build-ul
+```
+
+Scriptul face tot: instalează **JDK 17**, descarcă **command-line tools**,
+acceptă licențele, instalează `platform-tools`, `platforms;android-34` și
+`build-tools;34.0.0`, scrie `local.properties` și rulează `./gradlew assembleDebug`.
+
+APK-ul apare în:
+
 ```
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
-## Pași (linie de comandă)
+### Pasul 3 — scoate APK-ul din Ubuntu și instalează-l
+
+Ieși din Ubuntu și copiază APK-ul în Downloads-ul telefonului (din Termux):
 
 ```bash
-# o singură dată, dacă ai gradle instalat local:
-gradle wrapper --gradle-version 8.7
+exit          # ieși din proot-distro, ești din nou în Termux
+termux-setup-storage    # o singură dată, dă permisiune la storage
+cp /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/root/VcApp/app/build/outputs/apk/debug/app-debug.apk \
+   ~/storage/downloads/
+```
 
+Apoi deschizi **Downloads** din aplicația Files, apeși pe `app-debug.apk` și îl
+instalezi (permite „Install unknown apps" pentru Files).
+
+> Dacă ai clonat repo-ul în altă cale sau ca alt user, ajustează traseul
+> `/root/VcApp/...` de mai sus.
+
+### Depanare (Termux)
+
+| Problemă | Rezolvare |
+|---|---|
+| `OutOfMemoryError` / build omorât | În `gradle.properties` pune `org.gradle.jvmargs=-Xmx2048m` (sau `1024m` pe telefoane cu 4 GB) și `org.gradle.workers.max=2`. |
+| Erori de licențe SDK | `yes \| $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses` |
+| `sdkmanager` not found | Verifică să existe `$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager` (zip-ul se extrage uneori cu alt nume de folder — scriptul îl mută automat). |
+| Download command-line tools pică (versiune veche) | Actualizează `CMDLINE_TOOLS_VERSION` din `scripts/termux-build.sh` cu ultimul build de pe https://developer.android.com/studio |
+| Build-ul se oprește când blochezi telefonul | Ține ecranul aprins / nu închide Termux în timpul build-ului. |
+
+## 3. Build local pe PC (Android Studio)
+
+- **Android Studio Koala sau mai nou** (vine cu JDK 17 inclus)
+- **Android SDK Platform 34** + **Build-Tools 34** (Android Studio le descarcă singur)
+
+```bash
+git clone https://github.com/redglitchx001-dev/VcApp.git
+# open folderul VcApp în Android Studio, apoi:
 ./gradlew assembleDebug     # APK debug
 ./gradlew installDebug      # instalează direct pe telefonul conectat
 ```
 
-Dacă Gradle nu găsește SDK-ul, creează `local.properties` în rădăcina proiectului:
+Wrapper-ul Gradle (`gradlew`, `gradle/wrapper/gradle-wrapper.jar`) este commituit în
+repo, deci `./gradlew` merge direct — nu mai e nevoie de `gradle wrapper`.
+
+Dacă Gradle nu găsește SDK-ul, creează `local.properties` în rădăcină:
 
 ```properties
 sdk.dir=/home/utilizator/Android/Sdk        # Linux
